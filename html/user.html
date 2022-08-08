@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/icon.css">
+  <link rel="stylesheet" href="../css/font.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/login.css">
+  <script defer src="../js/config.js"></script>
+  <script defer src="../js/libary.js"></script>
+  <script defer type="module" src="../js/login.js"></script>
+  <title>User</title>
+</head>
+<body class="active">
+  <div id="login-window">
+    <div class="login_fild dja">
+      <form class="contaner dja" id="post">
+        <p class="heading dja"> 
+          <i class="sb-back" id="go-home"></i>
+          Login
+        </p>
+        <br /><br />
+        <div class="cover">
+          <div class="out dja">
+            <input
+              type="username"
+              spellcheck="false"
+              name="username"
+              id="user_or_email"
+              class="Input"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <p>Username</p>
+        </div>
+        <div class="cover">
+          <div class="out blue vdja">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="Input"
+              required
+            />
+          </div>
+          <p>Password</p>
+        </div>
+        <br />
+        <div name="submit" class="submit_btn dja">LOGIN</div>
+        <br />
+        <p class="next_page dja">
+          Don't Have an account? <a id="create-one"> Create one</a>
+        </p>
+        <br />
+      </form>
+    </div>
+  </div>
+
+  <div id="create-user-window">
+    <div class="login_fild dja">
+      <form class="contaner dja" id="post">
+        <p class="heading dja">
+          <i class="sb-back" id="go-login-pag"></i>
+          Sign Up
+        </p>
+        <br />
+        <div class="cover">
+          <div class="out dja">
+            <input
+              type="text"
+              id="full_name"
+              spellcheck="false"
+              name="full_name"
+              autocomplete="off"
+              class="Input"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <p>Full Name</p>
+        </div>
+  
+        <div class="cover">
+          <div class="out dja">
+            <input
+              type="text"
+              id="username"
+              autocomplete="off"
+              spellcheck="false"
+              name="username"
+              class="Input"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <p>Username</p>
+        </div>
+  
+        <div class="cover">
+          <div class="out dja">
+            <input
+              type="text"
+              id="user-code"
+              autocomplete="off"
+              spellcheck="false"
+              name="username"
+              class="Input"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <p>Your Code * From admin</p>
+        </div>
+  
+        <div class="cover">
+          <div class="out dja">
+            <input
+              type="email"
+              id="email"
+              autocomplete="off"
+              spellcheck="false"
+              name="email"
+              required
+              class="Input"
+              autocomplete="off"
+            />
+          </div>
+          <p class="status_user">Email</p>
+        </div>
+  
+        <div class="cover">
+          <div class="out dja">
+            <input type="password"
+            class="Input"
+            id="_password"
+            name="password"
+            required/>
+          </div>
+          <p>Create New Password</p>
+        </div>
+  
+        <div class="cover">
+          <div class="out dja">
+            <input type="password" class="Input" id="coPassword" name="copassword" required />
+          </div>
+          <p>Confirm Password</p>
+        </div>
+  
+        <br />
+        <div class="submit_btn dja">Continue</div>
+        <br />
+        <p class="next_page dja">
+          Have an account?<a id="login-window-button">Login account</a>
+        </p>
+        <br />
+      </form>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+@font-face {
+  font-family: "-sb-";
+  src: url("../src/fonts/icomoon.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="sb-"],
+[class*=" sb-"],
+[class^="sb-"]::before,
+[class*=" sb-"]::before,
+[class^="sb-"]::after,
+[class*=" sb-"]::after {
+  font-family: "-sb-";
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+[class^="sb-"]::before,
+[class*=" sb-"]::before {
+  transform: translateX(5%);
+}
+.sb-logout:before {
+  content: "\e1";
+}
+
+.sb-alert:before {
+  content: "\e900";
+}
+.sb-back:before {
+  content: "\e901";
+}
+.sb-back-to-top:before {
+  content: "\e902";
+}
+.sb-bag:before {
+  content: "\e903";
+}
+.sb-close:before {
+  content: "\e904";
+}
+.sb-history:before {
+  content: "\e905";
+}
+.sb-gmail:before {
+  content: "\e906";
+}
+.sb-group:before {
+  content: "\e907";
+}
+.sb-home:before {
+  content: "\e908";
+}
+.sb-layer:before {
+  content: "\e909";
+}
+.sb-layers:before {
+  content: "\e90a";
+}
+.sb-list:before {
+  content: "\e90b";
+}
+.sb-logout-1:before {
+  content: "\e90c";
+}
+.sb-magnifier:before {
+  content: "\e90d";
+}
+.sb-minus:before {
+  content: "\e90e";
+}
+.sb-pen:before {
+  content: "\e90f";
+}
+.sb-phone-call:before {
+  content: "\e910";
+}
+.sb-search:before {
+  content: "\e911";
+}
+.sb-shopping-bag:before {
+  content: "\e912";
+}
+.sb-trash-1:before {
+  content: "\e913";
+}
+.sb-true:before {
+  content: "\e914";
+}
+.sb-user:before {
+  content: "\e915";
+}
+.sb-box-add:before {
+  content: "\e95e";
+}
+.sb-box-remove:before {
+  content: "\e95f";
+}
+.sb-user-plus:before {
+  content: "\e973";
+}
+.sb-user-minus:before {
+  content: "\e974";
+}
+.sb-user-check:before {
+  content: "\e975";
+}
+.sb-circle-right:before {
+  content: "\e5";
+}
+.sb-circle-left:before {
+  content: "\ea44";
+}
+.sb-tag:before {
+  content: "\e9991";
+}
+.sb-tags:before {
+  content: "\e9992";
+}
+.sb-drawer:before {
+  content: "\e95c";
+}
+.sb-add-product:before {
+  content: "\e916";
+}
+.sb-drawer:before {
+  content: "\e95c";
+}
+.sb-key:before {
+  content: "\e98d";
+} 
+.sb-dice:before {
+  content: "\e917";
+}

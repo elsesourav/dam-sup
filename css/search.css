@@ -1,0 +1,54 @@
+/* ------- item found window -------- */
+#find-window {
+  display: none;
+}
+#find-window.active {
+  display: block;
+  z-index: 13;
+  background: #2a4153;
+}
+#find-window .title-bar {
+  position: relative;
+  width: 100%;
+  height: var(--group-title-h);
+  display: grid;
+  grid-template-columns: 10fr 40fr;
+  place-items: center;
+}
+#find-window #found-items {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--group-padding);
+}
+#find-window .item-found-name {
+  font-size: 1.3rem;
+  color: #fff;
+  text-shadow: 0 0 1px #000;
+}
+#find-window .item-found-name i {
+  font-size: 1.3rem;
+  color: #fff;
+  text-shadow: 0 0 1px #000;
+}
+/* .item-in,
+.item-out {
+  position: relative;
+  width: 100%;
+  height: 24px;
+  font-size: 0.8rem;
+  padding: 2px;
+} */
+
+@media only screen and (min-width: 500px) {
+  #find-window #found-items {
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  }
+}
+@media only screen and (min-width: 1200px) {
+  #find-window #found-items {
+    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+  }
+}

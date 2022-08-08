@@ -1,0 +1,117 @@
+#home-window {
+  display: none;
+}
+#home-window.active {
+  display: grid;
+  grid-template-rows: 30fr 20fr 35fr 10fr; 
+  place-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+#home-window.active::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  background-image: url(../src/home.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+  top: 0;
+  z-index: -1;
+}
+#home-window #welcome-title {
+  font-size: 2.2rem;
+  color: #fff;
+  font-family: "font20";
+  text-shadow: 0 0 2px #000, 0 0 5px #000, 0 0 10px #000, 0 0 20px #000, 0 0 2px #000, 0 0 5px #000, 0 0 10px #000, 0 0 20px #000;
+  font-weight: 300;
+}
+#home-window #h-dtls {
+  font-size: 1.7rem;
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+  width: 80%;
+  border-radius: 10px;
+  text-align: center;
+  background: #00000055;
+  padding: 20px 0;
+  border: solid 2px #ff9000;
+  font-weight: 300;
+}
+#home-window #section-2 {
+  position: relative;
+  display: grid;
+  gap: 40px;
+}
+#home-window #section-2 #login-btn {
+  font-size: 1.5rem;
+  padding: 3px 40px;
+  color: wheat;
+  text-shadow: 0 0 2px #000;
+  background: #00c6b355;
+  border-width: 3px;
+  border-style: solid;
+  /* ----------   top   right  botton  left --------- */
+  border-color: #46ffed #006a5f #006c61 #3bffeb;
+  font-family: "font20";
+  text-align: center;
+  border-radius: 6px;
+}
+#home-window footer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  color: #fff;
+  font-size: 0.8rem;
+}
+#home-window footer .copy-r {
+  position: relative;
+  font-family: "google";
+  color: #fff;
+  left: 8px;
+}
+#home-window footer .copy-r x{
+  font-family: "google";
+  position: absolute;
+  left: -18px;
+  top: -5px;
+  font-size: 1.7rem;
+}
+#home-window footer .p-no,
+#home-window footer .gmail {
+  font-family: "google";
+  position: relative;
+}
+
+@media only screen and (min-width: 1150px) {
+  #home-window {
+    display: none;
+  }
+  #home-window.active {
+    grid-template-rows: 30fr 20fr 35fr 5fr;
+  }
+ 
+  #home-window #welcome-title {
+    text-shadow: 0 0 2px #000, 0 0 5px #000, 0 0 10px #000,  0 0 20px #000;
+    font-weight: 500;
+  }
+  #home-window #h-dtls {
+    width: 60%;
+    background: #00c6b333;
+  }
+  #home-window footer {
+    display: grid;
+    grid-template-columns: 10fr 10fr 12fr;
+    place-items: center;
+  }
+}

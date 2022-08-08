@@ -1,0 +1,197 @@
+#member-window {
+  display: none;
+}
+#member-window.active {
+  display: block;
+  background: #006b60;
+}
+#member-window .title-bar {
+  position: relative;
+  width: var(--winWidth);
+  height: var(--group-title-h);
+  display: grid;
+  grid-template-columns: 20fr 5fr;
+  place-items: center;
+  background: #009687;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+}
+#member-window .title-bar i {
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+}
+#member-window .title-bar #add-member {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+#member-window .title-bar #add-member .sb-user-plus {
+  text-shadow: 0 0 2px #000;
+  padding: 4px;
+  background: #00000055;
+  border-radius: 6px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #b36500 #ffa227 #ffa227 #b36500;
+}
+
+
+#member-window #all-members {
+  position: relative;
+  width: calc(var(--winWidth) - var(--group-padding) * 2);
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--group-padding);
+}
+#member-window #all-members .member {
+  position: relative;
+  width: 100%;
+  height: var(--member-h);
+  box-shadow: inset 1px 1px 1px #8f8f8f;
+  display: grid;
+  background: #004a43;
+  border-bottom: 3px solid #002824;
+  grid-template-columns: 15fr 15fr 5fr 5fr;
+  grid-template-rows: 1fr;
+  place-items: center;
+  border-radius: 6px;
+  text-shadow: 0 0 1px #000;
+}
+#member-window #all-members .member .m-username,
+#member-window #all-members .member .m-password {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  grid-template-columns: 10fr 30fr;
+  grid-auto-flow: column;
+  overflow: hidden;
+}
+#member-window #all-members .member [class^="m-"] x {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow-x: auto;
+  align-items: center;
+  touch-action: auto;
+}
+#member-window #all-members .member [class^="m-"] x p {
+  position: relative;
+  width: auto;
+  touch-action: auto;
+  color: #fff;
+  font-family: "roboto";
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-align: left;
+}
+#member-window #all-members .member i {
+  font-size: 1rem;
+}
+.m-eidt,
+.m-delete {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border-radius: 6px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #b36500 #ffa227 #ffa227 #b36500;
+  box-shadow: 0 0 1px #000;
+}
+.m-delete i {
+  color: #f00;
+}
+.m-eidt i,
+.m-delete i {
+  text-shadow: 0 0 1px #000;
+}
+#member-window #add-m-window {
+  position: fixed;
+  z-index: 11;
+  width: var(--winWidth);
+  height: var(--winHeight);
+  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  display: none;
+  place-items: center;
+}
+#member-window #add-m-window.active {
+  display: grid;
+}
+#member-window #add-m-window .m-new-title #close-add-m-w {
+  position: absolute;
+  width: calc(var(--add-m-w) / 15);
+  height: calc(var(--add-m-w) / 15);
+  right: calc(var(--add-m-w) / 40);
+  top: calc(var(--add-m-w) / 40);
+}
+#member-window #add-m-window span {
+  position: relative;
+  width: var(--add-m-w);
+  height: var(--add-m-h);
+  display: grid;
+  place-items: center;
+  background: #fff;
+}
+@media only screen and (min-width: 500px) {
+  #member-window #all-members {
+    height: auto;
+    display: grid;
+    grid-template-columns: auto;
+    gap: var(--group-padding);
+  }
+  #member-window #all-members .member {
+    width: 80%;
+    display: grid;
+    grid-template-columns: 15fr 10fr 4fr 4fr;
+    grid-template-rows: 1fr;
+    margin: 0 10%;
+  }
+  #member-window #all-members .member,
+  #member-window #all-members .member i {
+    font-size: 1.1rem;
+  }
+  #member-window #all-members .member .m-username {
+    grid-template-columns: 8fr 30fr;
+  }
+  #member-window #all-members .member .m-password {
+    grid-template-columns: 10fr 30fr;
+  }
+}
+@media only screen and (min-width: 1150px) {
+  #member-window .title-bar #add-member i {
+    font-size: 1.5rem;
+    padding: 5px;
+  }
+  #member-window #all-members {
+    gap: calc(var(--group-padding) * 1.5);
+    margin-top: 10px;
+  }
+  #member-window #all-members .member {
+    width: 60%;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 18fr 10fr 3fr 3fr;
+    margin: 0 20%;
+  }
+  #member-window #all-members .member,
+  #member-window #all-members .member i {
+    font-size: 1.4rem;
+  }
+  #member-window #all-members .member .m-username {
+    grid-template-columns: 5fr 30fr;
+  }
+  #member-window #all-members .member .m-password {
+    grid-template-columns: 10fr 30fr;
+  }
+}
