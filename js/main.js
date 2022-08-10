@@ -4,16 +4,23 @@ import {
   getAuth,
   signInWithEmailAndPassword, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { equalTo, get, set, getDatabase, orderByChild, query, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { equalTo, get, set, getDatabase, orderByChild, query, ref, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 
 let user = undefined;
+let groups, historyLogs, members;
+
+let myStatus = {
+  uid: null,
+  username: null,
+  userType: "visitor"
+}
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth();
 const db = getDatabase();
 
-// auth.signOut()
+auth.signOut()
 onAuthStateChanged(auth, (usr) => {
   if (usr) {
     const uid = usr.uid;
@@ -25,20 +32,18 @@ onAuthStateChanged(auth, (usr) => {
 });
 
 try {
-  const dtls = JSON.parse(getCookie("DREAMOVA-SUPPLIERS-STORAGE"));
-  myStatus = dtls;
-  const db = getDatabase();
+  try {
+    const dtls = JSON.parse(getCookie("DREAMOVA-SUPPLIERS-STORAGE"));
+    myStatus = dtls;
+  } catch (error) {
+    console.log(error);
+  }
 
   onValue(ref(db, "datas"), (snapshot) => {
     if (snapshot.exists()) {
       const datas = snapshot.val();
       groups = datas.groups;
       historyLogs = datas.historyLogs;
-      onValue(ref(db, "members"), (snps) => {
-        if (snps.exists()) {
-          members = snps.val();
-        }
-      })
       allGroups.innerHTML = "";
       for (const key in groups) {
         addGroup(groups[key]);
@@ -46,7 +51,15 @@ try {
     } else {
       console.log("No data available");
     }
-  });
+  })
+  onValue(ref(db, "members"), (snps) => {
+    if (snps.exists()) {
+      members = snps.val();
+      memberSetup();
+    } else {
+      console.log("no member data");
+    }
+  })
 
 } catch (err) {
   console.log(err);
@@ -148,7 +161,7 @@ function hideWindow() {
 }
 
 // push log array 
-function logPush(mod, type, name) {
+async function logPush(mod, type, name) {
   let nDate = new Date;
   let mm = nDate.getMonth() + 1;
   let nmm = mm > 9 ? mm : `0${mm}`;
@@ -180,10 +193,7 @@ const createAlertBox = (message, yesObj, noObj, fun) => {
   const p1 = createEle("p", "alert-yes", artBtns, `<i class="sb-${yesObj.cn}"></i>${yesObj.nm}`);
 
   const close = () => alertWindow.classList.toggle("active", false);
-  p1.addEventListener("click", () => {
-    fun();
-    close();
-  });
+  p1.addEventListener("click", () => {fun(close)});
   p2.addEventListener("click", close);
   i.addEventListener("click", close);
   return p1;
@@ -264,7 +274,6 @@ menuOpenBtn.on(() => {
 
 openGroups.on(() => {
   hideWindow();
-  // setup();
   tuggle(groupSection);
   menuWindow.classList.remove("active")
 })
@@ -311,7 +320,7 @@ function addGroup(data) {
 
   upd.addEventListener("click", () => {
     if (inp.value == data.name || inp.value.length < 1) return;
-    createAlertBox(`Do you want to modify "${data.name}" group to "${inp.value}"?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, () => {
+    createAlertBox(`Do you want to modify "${data.name}" group to "${inp.value}"?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, (fun) => {
       const gName = data.name.split(" ").join("-");
       const newGname = inp.value.split(" ").join("-");
 
@@ -319,15 +328,17 @@ function addGroup(data) {
         if (sp.exists()) {
           let obj = {
             id: sp.val().id,
-            items: sp.val().items,
+            items: sp.val().items || [],
             name: inp.value
           }
+          console.log(obj);
           set(ref(db, `datas/groups/${newGname}`), obj).then(() => {
             remove(ref(db, `datas/groups/${gName}`)).then(() => {
               tuggle(allGroups, "edit");
-              logPush("modify", "group", `${data.name} to ${inp.value}`);
-              alertWindow.classList.toggle("active", false);
-              // console.log("update");
+              logPush("modify", "group", `${data.name} to ${inp.value}`).then(() => {
+                fun();
+                alertWindow.classList.toggle("active", false);
+              })
             })
           })
         }
@@ -335,15 +346,18 @@ function addGroup(data) {
     });
   })
 
+
   dlt.addEventListener("click", () => {
-    createAlertBox(`Do you want to delete "${data.name}" group?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, () => {
+    createAlertBox(`Do you want to delete "${data.name}" group?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, (fun) => {
       tuggle(allGroups, "edit");
 
       const gName = data.name.split(" ").join("-");
       remove(ref(db, `datas/groups/${gName}`)).then(() => {
         alertWindow.classList.toggle("active", false);
       })
-      logPush("delete", `group`, data.name);
+      logPush("delete", `group`, data.name).then(() => {
+        fun();
+      });
     });
   })
 
@@ -407,7 +421,7 @@ function setItem(item, parent = itemsSection) {
 
     updt.addEventListener("click", () => {
       if (iInp.value == item.name || iInp.value.length < 1) return;
-      createAlertBox(`Do you want to modify "${item.name}" item name to "${iInp.value}"?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, () => {
+      createAlertBox(`Do you want to modify "${item.name}" item name to "${iInp.value}"?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, (fun) => {
         const iName = item.name.split(" ").join("-");
         const newIname = iInp.value.split(" ").join("-");
 
@@ -420,10 +434,12 @@ function setItem(item, parent = itemsSection) {
             }
             set(ref(db, `datas/groups/${currentGroup}/items/${newIname}`), obj).then(() => {
               remove(ref(db, `datas/groups/${currentGroup}/items/${iName}`)).then(() => {
-                logPush("modify", `item`, `${item.name} to ${iInp.value}`);
                 get(ref(db, `datas/groups/${currentGroup}/items`)).then((sp) => {
                   itemSetup(sp.val());
                   tuggle(itemsSection);
+                  logPush("modify", `item`, `${item.name} to ${iInp.value}`).then(() => {
+                    fun();
+                  })
                 });
               })
             })
@@ -433,13 +449,15 @@ function setItem(item, parent = itemsSection) {
     })
 
     dlt.addEventListener("click", () => {
-      createAlertBox(`Do you want to delete "${item.name}" item?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, () => {
+      createAlertBox(`Do you want to delete "${item.name}" item?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, (fun) => {
         const iName = item.name.split(" ").join("-");
         remove(ref(db, `datas/groups/${currentGroup}/items/${iName}`)).then(() => {
-          logPush("delete", "item", item.name);
           get(ref(db, `datas/groups/${currentGroup}/items`)).then((sp) => {
-            tuggle(itemsSection);
-            itemSetup(sp.val());
+            logPush("delete", "item", item.name).then(() => {
+              tuggle(itemsSection);
+              itemSetup(sp.val());
+              fun();
+            });
           })
         })
       });
@@ -488,49 +506,31 @@ function setItem(item, parent = itemsSection) {
     }
   });
 
-  itmIn.addEventListener("click", () => {
+  itmIn.addEventListener("click", () => updateQuentity(1));
+  itmOut.addEventListener("click", () => updateQuentity(-1));
+
+  function updateQuentity(delta) {
     let intV = Number(it.value);
     if (intV >= 1) {
-      groups[currentGroup].items.forEach((im, i) => {
-        if (im.id === item.id) {
-          let oldQ = Number(im.quantity);
-          groups[currentGroup].items[i].quantity = Number(im.quantity) + intV;
-          if (parent === itemsSection) {
-            itemSetup(groups[currentGroup]);
-          } else {
-            setupFoundItems();
-          }
-          logPush(
-            "update",
-            `item`,
-            `${groups[currentGroup].items[i].name} quantity <x class="c-feb">${oldQ}</x> to <x class="c-feb">${groups[currentGroup].items[i].quantity}</x>`
-          )
+      const iName = item.name.split(" ").join("-");
+      get(ref(db, `datas/groups/${currentGroup}/items/${iName}`)).then((snp) => {
+        if (snp.exists()) {
+          const oldVal = Number(snp.val().quantity);
+          const newVal = oldVal + intV * delta;
+          update(ref(db, `datas/groups/${currentGroup}/items/${iName}/`), {
+            quantity
+              : newVal
+          }).then(() => {
+            get(ref(db, `datas/groups/${currentGroup}/items`)).then((sp) => {
+              itemSetup(sp.val());
+              logPush("update", `item`, `${snp.val().name} quantity <x class="c-feb">${oldVal}</x> to <x class="c-feb">${newVal}</x>`)
+            })
+          })
         }
       })
     }
-  })
+  }
 
-  itmOut.addEventListener("click", () => {
-    let intV = Number(it.value);
-    if (intV >= 1 && Number(item.quantity) >= intV) {
-      groups[currentGroup].items.forEach((im, i) => {
-        if (im.id === item.id) {
-          let oldQ = Number(im.quantity);
-          groups[currentGroup].items[i].quantity = Number(im.quantity) - intV;
-          if (parent === itemsSection) {
-            itemSetup(groups[currentGroup]);
-          } else {
-            setupFoundItems();
-          }
-          logPush(
-            "update",
-            `item`,
-            `${groups[currentGroup].items[i].name} quantity <x class="c-feb">${oldQ}</x> to <x class="c-feb">${groups[currentGroup].items[i].quantity}</x>`
-          )
-        }
-      })
-    }
-  })
   return itm;
 }
 
@@ -591,94 +591,102 @@ addNewGroupBtn.on(() => {
 /* --------- members ----------- */
 addMember.on(() => {
   addContentWindow.classList.toggle("active", true);
-  createAddDoc("Create New User", "Enter User Name", (e, fun) => {
+  createAddDoc("Create New Member", "Enter Name", (e, fun) => {
     const val = e.value.toLowerCase();
-    const db = getDatabase();
 
-    get(ref(db, "members")).then((snapshot) => {
-      let len = 0;
-      if (snapshot.exists()) len = Object.keys(snapshot.val()).length;
-      let q = query(ref(db, "members"), orderByChild("username"), equalTo(val));
+    if (val.length <= 5) {
+      e.setAttribute("placeholder", "Min 6 letter required!!!");
+      e.value = "";
+    } else if (!checkExp(val)) {
+      e.setAttribute("placeholder", "Format error (i-am_me@ ✔)");
+      e.value = "";
+    } else {
 
-      get(q).then((snp) => {
+      const q = query(ref(db, `members`), orderByChild("username"), equalTo(val));
+      get(q).then(function (snapshot) {
+        if (!snapshot.exists()) {
 
-        // when on user this name then create user
-        if (snp.exists()) {
-          e.setAttribute("placeholder", `${val} olready exist!`);
-          e.value = "";
-        } else if (e.value.length <= 5) {
-          e.setAttribute("placeholder", "Minimum 6 letter required");
-          e.value = "";
-        } else {
-
+          // when no user this name then create use
           const key = (Date.now() * (Math.floor(Math.random() * 999))).toString(36).toUpperCase();
-          set(ref(db, `members/${len}`), {
-            username: val,
-            uid: Date.now(),
-            key: key
-          }).then(() => {
-            members.push({
-              username: val,
-              uid: Date.now(),
-              key: key
-            })
-            logPush("modify", "member", "");
-            memberSetup();
-            fun();// close add user window
-          }).catch((error) => {
-            console.log(error);
-          });
+          set(ref(db, `members/${val}`), { username: val, uid: Date.now(), key: key })
+            .then(() => {
+              logPush("modify", "member", "");
+              fun();// close add user window
+            }).catch((error) => {
+              console.log(error);
+            });
+
+        } else {
+          e.setAttribute("placeholder", `${val} olready exist!!!`);
+          e.value = "";
         }
       });
-    })
+    }
   })
 })
 
 function checkExp(exp) {
-  return /^([a-zA-Z0-9\@\_]{6,16})+$/.test(exp);
+  return /^[a-z0-9_\-\@]{3,16}$/.test(exp);
 }
 
 function memberSetup() {
   allMembers.innerHTML = "";
-  members.forEach(mem => {
-    setMember(mem);
-  })
+  for (const key in members) {
+    setMember(members[key]);
+  }
 }
 
 function setMember(mem) {
   const mbr = createEle("div", "member", allMembers);
   createEle("div", "m-username", mbr, `<i class="sb-user"></i> <x><p>${mem.username}</p></x>`);
-  createEle("div", "m-password", mbr, `<i class="sb-dice"></i> <x><p>${mem.key}</p></x>`);
+  createEle("div", "m-password", mbr, `<i class="sb-key"></i> <x><p>${mem.key}</p></x>`);
   const usrE = createEle("div", "m-eidt", mbr, `<i class="sb-pen"></i>`);
   const dlt = createEle("div", "m-delete", mbr, `<i class="sb-user-minus"></i>`);
 
   usrE.addEventListener("click", () => {
     addContentWindow.classList.toggle("active", true);
-    createAddDoc("Create New User", "Enter New User Name", (e, fun) => {
-      const is = members.some(val => val.username == e.value);
-      if (!is) {
-        members.forEach((m, i) => {
-          if (m.uid === mem.uid) {
-            members[i].username = e.value;
+    createAddDoc("Update Member Name", "Enter New Name", (e, fun) => {
+      const val = e.value;
+
+      if (val.length <= 5) {
+        e.setAttribute("placeholder", "Min 6 letter required!!!");
+        e.value = "";
+      } else if (!checkExp(val)) {
+        e.setAttribute("placeholder", "Format error (i-am_me@ ✔)");
+        e.value = "";
+      } else {
+        get(ref(db, `members/${mem.username}`)).then((snp) => {
+          const member = snp.val();
+          if (snp.exists()) {
+            const q = query(ref(db, `members`), orderByChild("username"), equalTo(val));
+            get(q).then(function (snapshot) {
+              if (!snapshot.exists()) {
+                set(ref(db, `members/${val}`), {
+                  uid: member.uid,
+                  key: member.key,
+                  username: val
+                }).then(() => {
+                })
+                remove(ref(db, `members/${member.username}`)).then(() => {
+                  logPush("modify", "member", "");
+                  fun();
+                })
+              }
+            })
           }
         })
-        logPush("modify", "member", "");
-        memberSetup();
-        fun();
       }
-    }, "continue");
+    }, "rename");
   });
 
   dlt.addEventListener("click", () => {
-    members.forEach((m, i) => {
-      if (m.uid === mem.uid) {
-        createAlertBox(`Do you want to delete "${mem.username}" account?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, () => {
-          // members = remove(members, i);
-          memberSetup();
-          logPush("modify", "member", "");
+    createAlertBox(`Do you want to delete "${mem.username}" account?`, { cn: "true", nm: "YES" }, { cn: "close", nm: "NO" }, (fun) => {
+      remove(ref(db, `members/${mem.username}`)).then(() => {
+        logPush("modify", "member", "").then(() => {
+          fun();
         });
-      }
-    })
+      })
+    });
   })
 }
 
