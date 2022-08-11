@@ -84,7 +84,9 @@ main #group-section #all-groups .group .content {
   width: 100%;
   height: 100%;
   display: grid;
-  place-items: center;
+  justify-items: left;
+  align-items: center;
+  padding-left: 10%;
   cursor: pointer;
   grid-template-columns: 20fr 15fr;
   background: linear-gradient(#fff, #ddd);
@@ -255,7 +257,11 @@ main #inside-group-window #items-section {
 }
 .item .actiol-item .in-content {
   position: relative;
+  width: 100%;
   display: grid;
+  justify-items: left;
+  align-items: center;
+  padding-left: 15%;
   grid-template-rows: 20fr 15fr;
 }
 .item .actiol-item .item-name {
