@@ -117,8 +117,6 @@ main header.active .h-span {
   color: #fff;
   text-shadow: 0 0 1px #000;
   font-size: 1.2rem;
-}
-#menu-window ul li span{
   cursor: pointer;
 }
 #menu-window ul li i{
@@ -137,11 +135,11 @@ main header.active .h-span {
 @media only screen and (min-width: 1150px) {
   main header {
     height: var(--header-h);
-    grid-template-columns: calc( var(--list-w) * 5) 30fr 10fr;
+    grid-template-columns: calc( var(--list-w) * 6) 30fr 10fr;
   }
   
   main header.active {
-    grid-template-columns: calc( var(--list-w) * 5) 0fr 40fr;
+    grid-template-columns: calc( var(--list-w) * 6) 0fr 40fr;
   }
   
   main header.active #search-bar {
@@ -166,7 +164,7 @@ main header.active .h-span {
   #menu-window {
     position: relative;
     height: auto;
-    width: calc( var(--list-w) * 5);
+    width: calc( var(--list-w) * 6);
     top: auto;
     transition: none;
     left: auto;
@@ -177,7 +175,7 @@ main header.active .h-span {
   #menu-window ul {
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: repeat(5, 1fr) 0fr;
+    grid-template-columns: repeat(6, 1fr);
   }
   
   #menu-window ul li {

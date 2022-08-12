@@ -16,7 +16,7 @@ main #group-section .title-bar {
   width: 100%;
   height: var(--group-title-h);
   display: grid;
-  grid-template-columns: 20fr 5fr 5fr;
+  grid-template-columns: 30fr 5fr 5fr;
   align-items: center;
   justify-items: center;
   background: #335066;
@@ -24,7 +24,7 @@ main #group-section .title-bar {
 
 main #group-section .title-bar .title {
   position: relative;
-  font-size: calc(var(--header-f-s));
+  font-size: calc(var(--header-f-s) * 1.2);
   color: #fff;
   text-shadow: 0 0 1px #000;
   font-weight: 500;
@@ -39,15 +39,14 @@ main #group-section .title-bar .title i {
 .title-bar #add-new-group,
 .title-bar #edit-group {
   position: relative;
-  width: calc(var(--group-title-h) - var(--group-title-h) / 2);
-  height: calc(var(--group-title-h) - var(--group-title-h) / 2);
 }
+
 .title-bar #add-new-group i,
 .title-bar #edit-group i {
   position: relative;
   top: 4px;
   font-size: 1.2rem;
-  padding: 4px;
+  padding: 6px;
   background: #00000066;
   border-radius: 6px;
   border-width: 2px;
@@ -57,19 +56,6 @@ main #group-section .title-bar .title i {
   box-shadow: 0 0 1px #000;
 }
 
-main #group-section #all-groups {
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: var(--group-padding);
-}
-@media only screen and (min-width: 500px) {
-  main #group-section #all-groups {
-    grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
-  }
-}
 main #group-section #all-groups .group {
   position: relative;
   width: 100%;
@@ -84,9 +70,7 @@ main #group-section #all-groups .group .content {
   width: 100%;
   height: 100%;
   display: grid;
-  justify-items: left;
-  align-items: center;
-  padding-left: 10%;
+  place-items: center;
   cursor: pointer;
   grid-template-columns: 20fr 15fr;
   background: linear-gradient(#fff, #ddd);
@@ -95,11 +79,21 @@ main #group-section #all-groups .group .content {
 main #group-section #all-groups .group .content .items i,
 main #group-section #all-groups .group .content .group-name i {
   color: #000;
+  margin-right: 3px;
   font-size: 1.2rem;
+}
+main #group-section #all-groups .group .content .items,
+main #group-section #all-groups .group .content .group-name {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-items: left;
+  align-items: center;
+  padding-left: 10%;
 }
 main #group-section #all-groups .group .content .group-name i {
   position: relative;
-  top: 2px;
+  bottom: 2px;
   font-size: 1.5rem;
 }
 main #group-section #all-groups .group:nth-child(odd) .content {
@@ -160,6 +154,19 @@ main #group-section #all-groups .group.active .editable-content {
   color: #ff00ff55;
   text-shadow: 0 0 1px #000;
 }
+
+@media only screen and (min-width: 1200px) {
+  main #group-section .title-bar {
+    grid-template-columns: 55fr 3fr 3fr;
+  }
+  .title-bar #add-new-group i,
+  .title-bar #edit-group i {
+    position: relative;
+    padding: 6px;
+    font-size: 1.4rem;
+  }
+}
+
 /* ---------------------------- ----*/
 main #inside-group-window {
   position: absolute;
@@ -212,7 +219,6 @@ main #inside-group-window .title-bar #item-back-btn i {
   height: calc(var(--group-title-h) / 1.6);
   display: grid;
   background: #00000066;
-  font-size: 1rem;
   border-radius: 6px;
   border-width: 2px;
   border-style: solid;
@@ -229,298 +235,65 @@ main #inside-group-window .title-bar #item-back-btn i {
 }
 main #inside-group-window .scroll-box {
   height: calc(
-    var(--winHeight) - var(--group-h) - var(--header-h) - var(--group-padding) * 2
-  );
-}
-main #inside-group-window #items-section {
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--group-padding);
-}
-.item {
-  position: relative;
-  width: 100%;
-  height: var(--item-h);
-  border-radius: 6px;
-  overflow: hidden;
-}
-.item .actiol-item {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 20fr 20fr;
-  place-items: center;
-}
-.item .actiol-item .in-content {
-  position: relative;
-  width: 100%;
-  display: grid;
-  justify-items: left;
-  align-items: center;
-  padding-left: 15%;
-  grid-template-rows: 20fr 15fr;
-}
-.item .actiol-item .item-name {
-  font-size: 1rem;
-}
-.item .actiol-item .item-name i {
-  font-size: 1rem;
-  top: 1px;
-  color: #000;
-  text-shadow: 0 0 1px #fff;
-}
-.item .actiol-item .item-quantity {
-  font-size: 0.8rem;
-}
-.item .editable-items,
-.item .actiol-item {
-  background: linear-gradient(#fff, #ddd);
-  border-bottom: solid 5px #777;
-}
-.item:nth-child(odd) .editable-items,
-.item:nth-child(odd) .actiol-item {
-  background: linear-gradient(#aaa, #bbb);
-}
-.item .actiol-item span {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 14fr 10fr;
-}
-.item .actiol-item span .quantity-input-fild {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 10fr 15fr 10fr;
-  place-items: center;
+    var(--winHeight) - var(--group-h) - var(--header-h) - var(--group-padding) *
+    2
+    );
+  }
+
+@media only screen and (min-width: 1200px) {
+  main #inside-group-window .title-bar {
+    grid-template-columns: 5fr 50fr 3fr 3fr;
+  }
+  main #inside-group-window .title-bar #item-back-btn i {
+    font-size: 1.8rem;
+  } 
+  .title-bar #add-new-item i {
+    font-size: 1.5rem;
+  }
+  .title-bar #edit-item i {
+    font-size: 1.3rem;
+  }
 }
 
-.item .actiol-item span .quantity-input-fild ._input_ {
+    
+  
+/* ------------- all item window ---------------- */
+#all-item-window {
+  position: fixed;
+  width: var(--winWidth);
+  height: calc(var(--winHeight) - var(--header-h));
+  top: var(--header-h);
+  left: 0;
+  flex-direction: column;
+  background: #2a4153;
+  z-index: 1;
+  display: none;
+}
+
+#all-item-window.active {
+  display: flex;
+}
+#all-item-window .title-bar {
   position: relative;
-  height: 20px;
   width: 100%;
+  height: var(--group-title-h);
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  background: #335066;
 }
-.item .actiol-item span .quantity-input-fild ._input_ input {
+#all-item-window .title-bar .title {
   position: relative;
   width: 100%;
-  font-family: "google";
-  height: 100%;
-  text-align: center;
-}
-.item .actiol-item span .item-update-btn {
-  position: relative;
-  display: grid;
-  grid-template-columns: 10fr 10fr;
-  place-items: center;
-}
-.item .actiol-item span .item-update-btn .item-in,
-.item .actiol-item span .item-update-btn .item-out {
-  position: relative;
-  width: 65px;
-  background: #000000bb;
-  padding: 3px 0;
-  border-radius: 6px;
-  border: solid 1px #ff9000;
-  box-shadow: 0 0 1px #000;
-  display: grid;
-  font-size: 0.8rem;
-  place-items: center;
-}
-.item .actiol-item span .item-update-btn .item-in p,
-.item .actiol-item span .item-update-btn .item-out p {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
+  grid-auto-flow: column;
   color: #fff;
+  font-size: var(--header-f-s);
 }
-.item .actiol-item span .item-update-btn .item-in i,
-.item .actiol-item span .item-update-btn .item-out i {
-  font-size: 0.8rem;
-  margin: 0 3px;
-}
-
-main #inside-group-window #items-section .item .editable-items {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: none;
-}
-.item .actiol-item span .quantity-input-fild .plus-1,
-.item .actiol-item span .quantity-input-fild .mins-1 {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  border-radius: 100px;
-  border: solid 2px #000;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-}
-.mins-1 i,
-.plus-1 i {
-  position: relative;
-  display: grid;
-  place-items: center;
-}
-.mins-1 i::before,
-.plus-1 i::before {
-  content: "";
-  position: absolute;
-  width: 10px;
-  border-radius: 3px;
-  height: 2px;
-  background: #000;
-}
-
-.plus-1 i::after {
-  content: "";
-  position: absolute;
-  transform: rotate(90deg);
-  width: 10px;
-  border-radius: 3px;
-  height: 2px;
-  background: #000;
-}
-main #inside-group-window #items-section.active .item .editable-items {
-  display: grid;
-  inset: 0;
-  grid-template-columns: 10fr 10fr 10fr;
-  place-items: center;
-}
-main #inside-group-window #items-section.active .item .editable-items input {
-  position: relative;
-  width: 100%;
-  color: #000;
-  font-weight: 500;
-  background: #fff;
-  font-family: "google";
-  font-size: 1rem;
-  caret-color: #000;
-}
-.editable-items .item-delete-btn i,
-.editable-items .item-update i {
-  font-size: 1rem;
-  color: #f00;
-  text-shadow: 0 0 1px #000;
-}
-.editable-items .item-delete-btn,
-.editable-items .item-update {
-  color: #f00;
-  cursor: pointer;
-  border: solid 1px #ff000055;
-  padding: 5px 4px;
-  border-radius: 6px;
-}
-.editable-items .item-update i {
-  text-shadow: 0 0 1px #000;
-  color: #ff00ff88;
-}
-.editable-items .item-update {
-  color: #ff00ff88;
-}
-.editable-items .item-update.active i {
-  color: #f0f;
-  text-shadow: 0 0 1px #000;
-}
-@media only screen and (min-width: 500px) {
-  .item .actiol-item {
-    grid-template-columns: 20fr 40fr;
-  }
-  .item .actiol-item span {
-    display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: 10fr 10fr;
-  }
-  .item .actiol-item span .quantity-input-fild ._input_ {
-    position: relative;
-    height: 30px;
-    width: 100%;
-  }
-  .item .actiol-item span .quantity-input-fild ._input_ input {
-    font-size: 1.2rem;
-  }
-  .item .actiol-item span .item-update-btn .item-in,
-  .item .actiol-item span .item-update-btn .item-out {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-  .item .actiol-item span .item-update-btn .item-in p,
-  .item .actiol-item span .item-update-btn .item-out p {
-    width: 70px;
-    padding: 3px 0;
-    font-size: 1rem;
-  }
-  .item .actiol-item span .item-update-btn .item-in i,
-  .item .actiol-item span .item-update-btn .item-out i {
-    font-size: 1rem;
-  }
-  .item .actiol-item span .quantity-input-fild .plus-1,
-  .item .actiol-item span .quantity-input-fild .mins-1 {
-    transform: scale(1.4);
-  }
-}
-@media only screen and (min-width: 1200px) {
-  
-  #found-items,
-  main #inside-group-window #items-section {
-    position: relative;
-    width: 100%;
-    height: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
-    gap: var(--group-padding);
-  }
-  .item .actiol-item {
-    grid-template-columns: 30fr 40fr;
-  }
-  .item .actiol-item span {
-    display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: 10fr 10fr;
-  }
-  .item .actiol-item .in-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: 20fr 20fr;
-    place-items: center;
-  }
-  .item .actiol-item .item-name {
-    font-size: 1.5rem;
-  }
-  .item .actiol-item span .quantity-input-fild ._input_ {
-    position: relative;
-    height: 30px;
-    width: 100%;
-  }
-  .item .actiol-item .item-quantity {
-    font-size: 1rem;
-  }
-  .item .actiol-item span .quantity-input-fild ._input_ input {
-    font-size: 1.2rem;
-  }
-  .item .actiol-item span .item-update-btn .item-in p,
-  .item .actiol-item span .item-update-btn .item-out p {
-    width: 70px;
-    font-size: 1.1rem;
-    padding: 5px;
-  }
-  .item .actiol-item span .item-update-btn .item-in i,
-  .item .actiol-item span .item-update-btn .item-out i {
-    font-size: 1.1rem;
-  }
-  .item .actiol-item span .quantity-input-fild .plus-1,
-  .item .actiol-item span .quantity-input-fild .mins-1 {
-    transform: scale(1.4);
-  }
+#all-item-window .title-bar .title i {
+  font-size: calc(var(--header-f-s));
 }

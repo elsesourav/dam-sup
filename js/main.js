@@ -67,6 +67,7 @@ try {
     get(ref(db, `datas/groups/${currentGroup}/items`)).then((sp) => {
       itemSetup(sp.val());
       setupFoundItems();
+      setupAllItem();
     });
   })
 
@@ -104,9 +105,15 @@ const backFWindow = I("back-f-window");
 // Menu lest ids
 const openHome = I("open-home")
 const openGroups = I("open-groups")
+const openAllItem = I("open-all-item")
 const openHistorys = I("open-historys")
 const openMembers = I("open-members")
 const logoutWindow = I("logout-window")
+
+// all item show window 
+const allItemWindow = I("all-item-window")
+const allItemList = I("all-item-list")
+
 
 // home ids
 const homeWindow = I("home-window")
@@ -163,7 +170,8 @@ window.addEventListener("resize", (e) => {
 
 // hide all active window 
 function hideWindow() {
-  const all = [findWindow, homeWindow, groupSection, insideGroupWindow, memberWindow, historyWindow];
+  const all = [findWindow, homeWindow, groupSection, insideGroupWindow, memberWindow, historyWindow, allItemWindow];
+  menuWindow.classList.remove("active")
   all.forEach(a => {
     a.classList.remove("active");
   })
@@ -276,7 +284,6 @@ searchInput.on("focusout", () => {
 openHome.on(() => {
   hideWindow();
   homeWindow.classList.add("active")
-  menuWindow.classList.remove("active")
 })
 
 I("close-menuz").on(() => {
@@ -290,22 +297,65 @@ menuOpenBtn.on(() => {
 openGroups.on(() => {
   hideWindow();
   tuggle(groupSection);
-  menuWindow.classList.remove("active")
+})
+
+openAllItem.on(() => {
+  hideWindow();
+  setupAllItem();
+  tuggle(allItemWindow);
 })
 
 openHistorys.on(() => {
   hideWindow();
   setupHistory();
   tuggle(historyWindow);
-  menuWindow.classList.remove("active")
 })
 
 openMembers.on(() => {
   hideWindow();
   memberSetup();
   tuggle(memberWindow);
-  menuWindow.classList.remove("active")
 })
+
+function memberSetup() {
+  allMembers.innerHTML = "";
+  for (const key in members) {
+    setMember(members[key]);
+  }
+}
+
+function itemSetup(items) {
+  itemsSection.innerHTML = "";
+  for (const key in items) {
+    setItem(items[key]);
+  }
+}
+
+function setupAllItem() {
+  allItemList.innerHTML = "";
+  get(ref(db, `datas/groups`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      let allItems = [];
+      const groups = snapshot.val();
+      for (const key in groups) {
+        const items = groups[key].items;
+        for (const k in items) {
+          allItems.push(items[k]);
+        }
+      }
+
+      // sort a-z
+      allItems.sort((a, b) => {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+        if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+        return 0;
+      });
+      allItems.forEach((e) => {
+        setItem(e, allItemList);
+      })
+    }
+  });
+}
 
 
 
@@ -393,14 +443,6 @@ function addGroup(data) {
     tuggle(insideGroupWindow);
   })
 }
-
-function itemSetup(items) {
-  itemsSection.innerHTML = "";
-  for (const key in items) {
-    setItem(items[key]);
-  }
-}
-
 
 function setItem(item, parent = itemsSection) {
   const itm = createEle("div", "item", parent);
@@ -560,8 +602,6 @@ function setItem(item, parent = itemsSection) {
   }
 }
 
-
-
 itemBackBtn.on(() => {
   allGroups.innerHTML = "";
   get(ref(db, `datas/groups`)).then((snapshot) => {
@@ -669,12 +709,7 @@ function checkExp(exp) {
   return /^[a-z0-9_\-\@]{3,16}$/.test(exp);
 }
 
-function memberSetup() {
-  allMembers.innerHTML = "";
-  for (const key in members) {
-    setMember(members[key]);
-  }
-}
+
 
 function setMember(mem) {
   const mbr = createEle("div", "member", allMembers);
