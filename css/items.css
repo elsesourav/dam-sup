@@ -36,7 +36,7 @@
   grid-template-rows: 20fr 15fr;
 }
 .item.non-user .actiol-item .in-content {
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 3fr 2fr;
   padding-left: 10%;
   grid-template-rows: 1fr;
 }
