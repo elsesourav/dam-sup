@@ -83,6 +83,7 @@ main #group-section #all-groups .group .content {
   grid-template-columns: 20fr 15fr;
   background: linear-gradient(#fff, #ddd);
   border-bottom: solid 5px #777;
+  transition: linear 0.2s;
 }
 main #group-section #all-groups .group .content .items i,
 main #group-section #all-groups .group .content .group-name i {
@@ -172,9 +173,12 @@ main #group-section #all-groups .group.active .editable-content {
   box-shadow: inset 0 0 10px #500092, 0 0 3px #fff;
 }
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1100px) {
   main #group-section .title-bar {
-    grid-template-columns: 55fr 3fr 3fr;
+    grid-template-columns: 1fr 0 0;
+  }
+  main #group-section .title-bar.user {
+    grid-template-columns: 60fr 5fr 5fr;
   }
   .title-bar #add-new-group i,
   .title-bar #edit-group i {
@@ -264,9 +268,12 @@ main #inside-group-window .scroll-box {
   );
 }
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1100px) {
   main #inside-group-window .title-bar {
-    grid-template-columns: 5fr 50fr 3fr 3fr;
+    grid-template-columns: 5fr 60fr 0 0;
+  }
+  main #inside-group-window .title-bar.user {
+    grid-template-columns: 5fr 50fr 5fr 5fr;
   }
   main #inside-group-window .title-bar #item-back-btn i {
     font-size: 1.8rem;

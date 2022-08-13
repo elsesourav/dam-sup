@@ -136,8 +136,8 @@
 }
 #add-content-window .add-box-tab .create-group-title i {
   color: #f00;
-  text-shadow: 0 0 1px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  text-shadow: 0 0 1px #000, 0 0 2px #000;
 }
 #add-content-window .add-box-tab .create-group-title p {
   margin-left: 10%;

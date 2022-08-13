@@ -194,6 +194,10 @@ const createAlertBox = (message, yesObj, noObj, fun) => {
   const p2 = createEle("p", "alert-no", artBtns, `<i class="sb-${noObj.cn}"></i>${noObj.nm}`);
   const p1 = createEle("p", "alert-yes", artBtns, `<i class="sb-${yesObj.cn}"></i>${yesObj.nm}`);
 
+  hover(i, "hover");
+  hover(p1, "hover-f");
+  hover(p2, "hover-f");
+
   const close = () => alertWindow.classList.toggle("active", false);
   p1.on(() => { fun(close) });
   p2.on(close);
@@ -219,6 +223,10 @@ function createAddDoc(titel, placeholderName, fun, done = "add") {
   const closeWin = () => addContentWindow.classList.toggle("active", false);
   close.on(closeWin);
   cancle.on(closeWin);
+
+  hover(close, "hover");
+  hover(add, "hover-f");
+  hover(cancle, "hover-f");
 
   add.on(() => {
     if (inp.value.length < 1) return;
@@ -279,6 +287,10 @@ searchInput.on("focusout", () => {
 
 /* -------- menu event -------- */
 openHome.on(() => {
+  hideWindow();
+  homeWindow.classList.add("active")
+})
+Q(".h-span").on(() => {
   hideWindow();
   homeWindow.classList.add("active")
 })
@@ -381,6 +393,8 @@ function addGroup(data) {
   inp.setAttribute("placeholder", "Group Name");
   const upd = createEle("div", "group-update", edcnt, `<i class="sb-back-to-top"></i> RENAME`);
 
+  hover(ctn, "hover-r");
+  hover(dlt, "hover-f");
   inp.on(() => {
     inp.select();
   })
@@ -391,6 +405,7 @@ function addGroup(data) {
 
   function inputEvent() {
     if (data.name != inp.value && inp.value.length > 1 && validText(inp.value)) {
+      hover(upd, "hover-f");
       upd.classList.add("active");
     } else {
       upd.classList.remove("active");
@@ -483,10 +498,16 @@ function setItem(item, parent = itemsSection) {
   it.setAttribute("value", "0");
   const pls = createEle("div", "plus-1", qunInp, `<i></i>`);
 
+  hover(mins);
+  hover(pls);
+
   const itmUpdBtn = createEle("div", "item-update-btn", spn);
   if (myStatus.type == "visitor") itmUpdBtn.style.display = "none";
   const itmOut = createEle("div", "item-out", itmUpdBtn, `<p><i class="sb-box-remove"></i> OUT</p>`);
   const itmIn = createEle("div", "item-in", itmUpdBtn, `<p><i class="sb-box-add"></i> IN</p>`);
+
+  hover(itmIn, "hover");
+  hover(itmOut, "hover");
 
   if (parent == itemsSection) {
     const edtItm = createEle("div", "editable-items", itm);
@@ -499,6 +520,7 @@ function setItem(item, parent = itemsSection) {
     iInp.setAttribute("placeholder", `Item Name`);
     const updt = createEle("div", "item-update", edtItm, `<i class="sb-back-to-top"></i> RENAME`);
 
+    hover(dlt, "hover-f");
 
     // when past name or new name not match
     iInp.addEventListener("input", inputEvent);
@@ -507,6 +529,7 @@ function setItem(item, parent = itemsSection) {
     function inputEvent() {
       if (item.name != iInp.value && iInp.value.length > 1 && validText(iInp.value)) {
         updt.classList.add("active");
+        hover(updt, "hover-f");
       } else {
         updt.classList.remove("active");
       }
@@ -769,6 +792,8 @@ function setMember(mem) {
   } else {
     const dlt = createEle("div", "m-delete", mbr, `<i class="sb-user-minus"></i>`);
 
+    hover(dlt);
+
     dlt.on(() => {
       createAlertBox(`Do you want to delete "${mem.username}" account?`,
         { cn: "true", nm: "YES" },
@@ -786,6 +811,8 @@ function setMember(mem) {
     })
   }
   const usrE = createEle("div", "m-eidt", mbr, `<i class="sb-pen"></i>`);
+
+  hover(usrE);
 
   usrE.on(() => {
     addContentWindow.classList.toggle("active", true);

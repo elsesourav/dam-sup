@@ -85,12 +85,17 @@ function getFormatTime() {
   return `${days[d.getDay()]} ${day} ${hh}:${mm}`;
 }
 
-function hover(element) {
+function hover(element, name = "hover") {
+  const namerun = `${name}-n`
+  element.classList.add(namerun);
+  element.classList.remove(name);
   const addHover = () => {
-    element.classList.add("hover");
+    element.classList.add(name);
+    element.classList.remove(namerun);
   }
   const removeHover = () => {
-    element.classList.remove("hover");
+    element.classList.remove(name);
+    element.classList.add(namerun);
   }
   element.addEventListener("touchstart", addHover);
   element.addEventListener("mouseenter", addHover);
@@ -106,9 +111,20 @@ function b10t36(v) {
   return Number(v).toString(36);
 }
 
-const hoverIds = document.querySelectorAll(".hover").forEach((h) => {
-  hover(h);
-})
+window.onload = () => {
+  document.querySelectorAll(".hover").forEach((h) => {
+    hover(h);
+  })
+  document.querySelectorAll(".hover-r").forEach((h) => {
+    hover(h, "hover-r");
+  })
+  document.querySelectorAll(".hover-f").forEach((h) => {
+    hover(h, "hover-f");
+  })
+  document.querySelectorAll(".hover-l").forEach((h) => {
+    hover(h, "hover-l");
+  })
+}
 
 function setCookie(cname, cvalue, exdays) {
   const d = new Date();

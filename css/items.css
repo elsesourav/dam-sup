@@ -141,6 +141,7 @@
   display: grid;
   place-items: center;
   cursor: pointer;
+  transition: linear 0.1s;
 }
 .mins-1 i,
 .plus-1 i {
@@ -167,6 +168,16 @@
   height: 2px;
   background: #000;
 }
+
+.mins-1.hover {
+  transition: 0.1s linear;
+  background: #ff0000;
+}
+.plus-1.hover {
+  transition: 0.1s linear;
+  background: #00ff00;
+}
+
 .i-t-e-m-s.active .item .editable-items {
   display: grid;
   inset: 0;

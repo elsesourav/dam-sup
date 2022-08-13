@@ -64,6 +64,7 @@ main header .h-span {
   transition: 0.5s linear;
   text-overflow: ellipsis;
   white-space: nowrap;
+  cursor: pointer;
   opacity: 1;
 }
 main header.active .h-span {
@@ -103,6 +104,7 @@ main header.active .h-span {
   display: grid;
   grid-template-rows: repeat(var(--list-len), var(--menu-list-h)) auto;
   background: #24292e;
+  overflow: hidden;
 }
 
 #menu-window ul li {
@@ -122,6 +124,7 @@ main header.active .h-span {
   text-shadow: 0 0 1px #000;
   font-size: 1.2rem;
   cursor: pointer;
+  transition: linear 0.2s;
 }
 #menu-window ul #open-members {
   display: none;

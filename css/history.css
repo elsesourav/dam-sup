@@ -136,14 +136,17 @@
     font-size: 2rem;
   }
   #history-window #show-history {
-    padding: 40px 80px;
+    padding: 20px 80px;
   }
   #history-window #show-history .h-log {
+    margin: 0;
+    padding: 0;
     gap: calc(var(--group-padding) * 4);
-    height: calc(var(--log-h) * 2);
+    height: calc(var(--log-h) * 1.5);
   }
   #history-window #show-history .h-log .h-span {
-    top: 6px;
+    transform: translateY(-5px);
+    top: 0;
     font-size: 1.5rem;
   }
   #history-window #show-history .h-log .h-span div:first-child {

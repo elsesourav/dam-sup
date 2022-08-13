@@ -178,10 +178,6 @@ input[type="number"]::-webkit-outer-spin-button {
   border-color: #86d1ff #013c61 #044c94 #50bcff;
 }
 
-
-
-
-
 .scroll-box div, 
 .scroll-box span,
 .scroll-box i {
@@ -199,3 +195,35 @@ input[type="number"]::-webkit-outer-spin-button {
   overflow-y: scroll; 
 }
 
+.hover-n {
+  transition: 0.1s linear;
+  transform: scale(1);
+}
+.hover {
+  transition: 0.1s linear; 
+  transform: scale(0.9);
+}
+.hover-r-n {
+  transition: 0.2s linear;
+  transform: translateX(0px);
+}
+.hover-r {
+  transition: 0.2s linear;
+  transform: translateX(5px);
+}
+.hover-l-n {
+  transition: 0.2s linear;
+  transform: translateX(0px);
+}
+.hover-l {
+  transition: 0.2s linear;
+  transform: translateX(-5px);
+}
+.hover-f-n {
+  transition: 0.2s linear;
+  font-size: 100%;
+}
+.hover-f {
+  transition: 0.2s linear;
+  font-size: 90%;
+}
