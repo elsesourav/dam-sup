@@ -289,8 +289,8 @@ openMembers.on(() => {
 })
 
 async function memberSetup() {
-  allMembers.innerHTML = "";
   const members = (await get(ref(db, `members`))).val();
+  allMembers.innerHTML = "";
   for (const key in members) {
     setMember(members[key]);
   }
@@ -755,7 +755,7 @@ function setMember(mem) {
 
           if (snp.exists()) {
             const q = query(ref(db, `members`), orderByChild("username"), equalTo(val));
-            
+
             const snapshot = await get(q);
             if (!snapshot.exists()) {
               remove(ref(db, `members/${s.username}`))
@@ -769,8 +769,8 @@ function setMember(mem) {
                 password: s.password || null
               }
               await set(ref(db, `members/${val}`), obj);
-              await set(ref(db, `laseUpdate/`), { status: `name: ${myStatus.username}, date: ${(new Date())}` })
               await logPush("modify", "member", "");
+              await set(ref(db, `laseUpdate/`), { status: `name: ${myStatus.username}, date: ${(new Date())}` })
               fun();
             }
           }
