@@ -89,7 +89,7 @@ submitBtn[0].on(async () => {
     const result = await get(ref(db, `members/${useInpVal}`));
     if (result) {
       const val = result.val();
-      const user = await signInWithEmailAndPassword(auth, val.email, pasInpVal);
+      await signInWithEmailAndPassword(auth, val.email, pasInpVal);
       const obj = {
         username: val.username,
         type: val.type
@@ -151,14 +151,14 @@ submitBtn[1].on(async () => {
   
       const user = createdUser.user;
       const date = new Date();
-  
+      
       await set(ref(db, `members/${usernaemVal}`), {
         uid: user.uid,
         email: emailInVal,
         username: userData.username,
-        key: userData.key,
         date: date,
-        type: 'member',
+        key: userData.key,
+        type: userData.type,
         password: `%${b10t36(date)}${stringToB64(passwordInVal)}%${b10t36(date)}`
       })
       document.body.classList.toggle("active", true);
