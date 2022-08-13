@@ -101,7 +101,7 @@ main header.active .h-span {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: repeat(6, var(--menu-list-h)) auto;
+  grid-template-rows: repeat(var(--list-len), var(--menu-list-h)) auto;
   background: #24292e;
 }
 
@@ -123,12 +123,30 @@ main header.active .h-span {
   font-size: 1.2rem;
   cursor: pointer;
 }
+#menu-window ul #open-members {
+  display: none;
+}
+#menu-window ul #open-members.show {
+  display: flex;
+}
+
+
 #menu-window ul li i{
   top: calc(var(--icon-menu-p-r) / 6);
   padding-right: var(--icon-menu-p-r);
   color: #00c6b3;
   text-shadow: 0 0 2px #000;
 }
+#menu-window ul li.active span.in-,
+#menu-window ul li span.out- {
+  display: block;
+}
+
+#menu-window ul li span.in-,
+#menu-window ul li.active span.out- {
+  display: none;
+}
+
 #menu-window ul li .sb-tags{
   font-size: 1.1rem;
 }
@@ -139,11 +157,11 @@ main header.active .h-span {
 @media only screen and (min-width: 1150px) {
   main header {
     height: var(--header-h);
-    grid-template-columns: calc( var(--list-w) * 6) 30fr 10fr;
+    grid-template-columns: 30fr 10fr calc( var(--list-w) * 6);
   }
   
   main header.active {
-    grid-template-columns: calc( var(--list-w) * 6) 0fr 40fr;
+    grid-template-columns: 0fr 40fr calc( var(--list-w) * 6);
   }
   
   main header.active #search-bar {
@@ -179,11 +197,12 @@ main header.active .h-span {
   #menu-window ul {
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(var(--list-len), 1fr);
   }
   
   #menu-window ul li {
     border: none;
+    padding-left: 0%;
   }
   #menu-window ul li i{
     color: #00c6b3;

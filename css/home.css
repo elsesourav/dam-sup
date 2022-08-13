@@ -46,20 +46,25 @@
   position: relative;
   display: grid;
   gap: 40px;
+  cursor: pointer;
 }
 #home-window #section-2 #login-btn {
   font-size: 1.5rem;
-  padding: 3px 40px;
+  padding: 3px 10px;
   color: wheat;
   text-shadow: 0 0 2px #000;
   background: #00c6b355;
   border-width: 3px;
+  display: none;
   border-style: solid;
   /* ----------   top   right  botton  left --------- */
   border-color: #46ffed #006a5f #006c61 #3bffeb;
   font-family: "font20";
   text-align: center;
   border-radius: 6px;
+}
+#home-window #section-2 #login-btn.active {
+  display: block;
 }
 #home-window footer {
   position: relative;

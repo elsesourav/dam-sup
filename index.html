@@ -23,6 +23,12 @@
   <body>
     <main>
       <header class="" id="header">
+        <div id="open-menu"><i class="sb-list"></i></div>
+        <span class="h-span">DREAMOVA&nbsp; SUPPLIERS</span>
+        <div id="search-bar">
+          <input type="text" id="search-input" spellcheck="false" />
+          <i class="sb-magnifier"></i>
+        </div>
         <div id="menu-window">
           <div id="close-menuz"></div>
           <ul>
@@ -41,24 +47,19 @@
             <li id="open-members">
               <span><i class="sb-group"></i>Member</span>
             </li>
-            <li id="logout-window">
-              <span><i class="sb-logout-1"></i>Logout</span>
+            <li id="logout-window" class="active">
+              <span class="out-"><i class="sb-logout-1"></i>Log out</span>
+              <span class="in-"><i class="sb-user"></i>Log in</span>
             </li>
             <pre><span></span></pre>
           </ul>
-        </div>
-        <div id="open-menu"><i class="sb-list"></i></div>
-        <span class="h-span">DREAMOVA&nbsp; SUPPLIERS</span>
-        <div id="search-bar">
-          <input type="text" id="search-input" spellcheck="false" />
-          <i class="sb-magnifier"></i>
         </div>
       </header>
       <div id="home-window" class="window active">
         <div id="welcome-title">Welcome Cheap!</div>
         <div id="h-dtls">Dreamova Suppliers Storage Management</div>
         <div id="section-2">
-          <div id="login-btn">Login</div>
+          <div id="login-btn" class="active"><i class="sb-user"></i> Log in</div>
         </div>
         <footer>
           <div class="copy-r"><x>&#169;</x> SouravBarui2022</div>
@@ -67,7 +68,7 @@
         </footer>
       </div>
       <div id="group-section" class="window">
-        <div class="title-bar">
+        <div class="title-bar" id="group-title">
           <div class="title"><i class="sb-layers"></i> Groups</div>
           <div id="add-new-group"><i class="sb-layer"></i></div>
           <div id="edit-group"><i class="sb-pen"></i></div>
@@ -77,7 +78,7 @@
         </div>
       </div>
       <div id="inside-group-window" class="window">
-        <div class="title-bar">
+        <div class="title-bar" id="item-title">
           <div id="item-back-btn"><i class="sb-back"></i></div>
           <div class="title" id="item-group-title"></div>
           <div id="add-new-item">

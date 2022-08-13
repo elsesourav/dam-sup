@@ -7,7 +7,7 @@ import { equalTo, get, getDatabase, onValue, orderByChild, query, ref, remove, s
 
 let myStatus = {
   username: null,
-  userType: "visitor"
+  type: "visitor"
 }
 
 const app = initializeApp(firebaseConfig);
@@ -15,13 +15,44 @@ const analytics = getAnalytics(app);
 const auth = getAuth();
 const db = getDatabase();
 
+const logoutWindow = I("logout-window");
+const loginBtn = I("login-btn");
+loginBtn.on(() => {
+  location.replace("../html/user.html")
+});
+Q(".in-").on(() => {
+  location.replace("../html/user.html")
+});
+
+//  resize windwo 
+let winWidth = window.innerWidth;
+let winHeight = window.innerHeight;
+const root = document.querySelector(":root");
+root.style.setProperty("--winWidth", `${winWidth}px`);
+root.style.setProperty("--winHeight", `${winHeight}px`);
+
+window.addEventListener("resize", (e) => {
+  winWidth = window.innerWidth;
+  winHeight = window.innerHeight;
+  root.style.setProperty("--winWidth", `${winWidth}px`);
+  root.style.setProperty("--winHeight", `${winHeight}px`);
+});
+
 try {
   onAuthStateChanged(auth, (usr) => {
     if (usr) {
       const dtls = JSON.parse(getCookie("DREAMOVA-SUPPLIERS-STORAGE"));
       myStatus = dtls;
-      console.log(myStatus);
+      I("welcome-title").innerText = `Welcome ${myStatus.username}`;
+      loginBtn.classList.toggle("active", false);
+      logoutWindow.classList.toggle("active", false);
+      I("group-title").classList.add("user");
+      I("item-title").classList.add("user");
+      if (myStatus.type == "admin") I("open-members").classList.add("show");
+      root.style.setProperty("--list-len", `6`);
     } else {
+      loginBtn.classList.toggle("active", true);
+      logoutWindow.classList.toggle("active", true);
       console.log("no user");
     }
   });
@@ -41,6 +72,7 @@ try {
 
   onValue(ref(db, "members"), (snps) => {
     memberSetup();
+
   })
 
   onValue(ref(db, `laseUpdate`), async () => {
@@ -58,10 +90,6 @@ try {
 const alertWindow = I("alert-window");
 const addContentWindow = I("add-content-window");
 
-const loginBtn = I("login-btn");
-loginBtn.on(() => {
-  location.replace("../html/user.html")
-});
 
 
 // header ids
@@ -80,20 +108,19 @@ const findWindow = I("find-window");
 const backFWindow = I("back-f-window");
 
 // Menu lest ids
-const openHome = I("open-home")
-const openGroups = I("open-groups")
-const openAllItem = I("open-all-item")
-const openHistorys = I("open-historys")
-const openMembers = I("open-members")
-const logoutWindow = I("logout-window")
+const openHome = I("open-home");
+const openGroups = I("open-groups");
+const openAllItem = I("open-all-item");
+const openHistorys = I("open-historys");
+const openMembers = I("open-members");
 
 // all item show window 
-const allItemWindow = I("all-item-window")
-const allItemList = I("all-item-list")
+const allItemWindow = I("all-item-window");
+const allItemList = I("all-item-list");
 
 
 // home ids
-const homeWindow = I("home-window")
+const homeWindow = I("home-window");
 
 // Groups window ids
 const groupSection = I("group-section");
@@ -126,20 +153,6 @@ let dates = {
   year: _d.getFullYear(),
   month: _d.getMonth()
 }
-
-//  resize windwo 
-let winWidth = window.innerWidth;
-let winHeight = window.innerHeight;
-const root = document.querySelector(":root");
-root.style.setProperty("--winWidth", `${winWidth}px`);
-root.style.setProperty("--winHeight", `${winHeight}px`);
-
-window.addEventListener("resize", (e) => {
-  winWidth = window.innerWidth;
-  winHeight = window.innerHeight;
-  root.style.setProperty("--winWidth", `${winWidth}px`);
-  root.style.setProperty("--winHeight", `${winHeight}px`);
-});
 
 // hide all active window 
 function hideWindow() {
@@ -212,6 +225,19 @@ function createAddDoc(titel, placeholderName, fun, done = "add") {
     fun(inp, closeWin);
   })
 }
+
+
+Q(".out-").on(() => {
+  createAlertBox(` Hello '${myStatus.username}' are you sure you want to log out?`,
+    { cn: "true", nm: "YES" },
+    { cn: "close", nm: "NO" },
+    async (fun) => {
+      await auth.signOut();
+      fun();
+      location.reload();
+    })
+})
+
 
 let searchValue = "";
 // search event
@@ -289,6 +315,7 @@ openMembers.on(() => {
 })
 
 async function memberSetup() {
+  if (myStatus.type != "admin") return;
   const members = (await get(ref(db, `members`))).val();
   allMembers.innerHTML = "";
   for (const key in members) {
@@ -439,6 +466,7 @@ function addGroup(data) {
 
 function setItem(item, parent = itemsSection) {
   const itm = createEle("div", "item", parent);
+  if (myStatus.type == "visitor") itm.classList.add("non-user")
   const aclCnt = createEle("div", "actiol-item", itm);
   const incnt = createEle("div", "in-content", aclCnt)
   createEle("div", "item-name", incnt, `<i class="sb-tag"></i> ${item.name}`);
@@ -446,6 +474,7 @@ function setItem(item, parent = itemsSection) {
   const spn = createEle("span", null, aclCnt);
 
   const qunInp = createEle("div", "quantity-input-fild", spn);
+  if (myStatus.type == "visitor") qunInp.style.display = "none";
   const mins = createEle("div", "mins-1", qunInp, `<i></i>`);
   const _input_ = createEle("div", "_input_", qunInp);
   const it = createEle("input", null, _input_);
@@ -455,6 +484,7 @@ function setItem(item, parent = itemsSection) {
   const pls = createEle("div", "plus-1", qunInp, `<i></i>`);
 
   const itmUpdBtn = createEle("div", "item-update-btn", spn);
+  if (myStatus.type == "visitor") itmUpdBtn.style.display = "none";
   const itmOut = createEle("div", "item-out", itmUpdBtn, `<p><i class="sb-box-remove"></i> OUT</p>`);
   const itmIn = createEle("div", "item-in", itmUpdBtn, `<p><i class="sb-box-add"></i> IN</p>`);
 
@@ -713,7 +743,7 @@ addMember.on(() => {
         // when no user this name then create use
         if (!snapshot.exists()) {
           const key = (Date.now() * (Math.floor(Math.random() * 999))).toString(36).toUpperCase();
-          await set(ref(db, `members/${val}`), { username: val, key: key })
+          await set(ref(db, `members/${val}`), { username: val, key: key, type: "member" })
           await logPush("modify", "member", "");
           fun();// close add user window
           set(ref(db, `laseUpdate/`), { status: `name: ${myStatus.username}, date: ${(new Date())}` })
@@ -729,13 +759,33 @@ addMember.on(() => {
 })
 
 
-
 function setMember(mem) {
   const mbr = createEle("div", "member", allMembers);
   createEle("div", "m-username", mbr, `<i class="sb-user"></i> <x><p>${mem.username}</p></x>`);
   createEle("div", "m-password", mbr, `<i class="sb-key"></i> <x><p>${mem.key}</p></x>`);
+
+  if (mem.type == "admin") {
+    createEle("span", null, mbr)
+  } else {
+    const dlt = createEle("div", "m-delete", mbr, `<i class="sb-user-minus"></i>`);
+
+    dlt.on(() => {
+      createAlertBox(`Do you want to delete "${mem.username}" account?`,
+        { cn: "true", nm: "YES" },
+        { cn: "close", nm: "NO" },
+        async (fun) => {
+          try {
+            await remove(ref(db, `members/${mem.username}`));
+            await logPush("modify", "member", "");
+            await set(ref(db, `laseUpdate/`), { status: `name: ${myStatus.username}, date: ${(new Date())}` })
+            fun();
+          } catch (error) {
+            console.log(error);
+          }
+        });
+    })
+  }
   const usrE = createEle("div", "m-eidt", mbr, `<i class="sb-pen"></i>`);
-  const dlt = createEle("div", "m-delete", mbr, `<i class="sb-user-minus"></i>`);
 
   usrE.on(() => {
     addContentWindow.classList.toggle("active", true);
@@ -781,21 +831,6 @@ function setMember(mem) {
     }, "rename");
   });
 
-  dlt.on(() => {
-    createAlertBox(`Do you want to delete "${mem.username}" account?`,
-      { cn: "true", nm: "YES" },
-      { cn: "close", nm: "NO" },
-      async (fun) => {
-        try {
-          await remove(ref(db, `members/${mem.username}`));
-          await logPush("modify", "member", "");
-          await set(ref(db, `laseUpdate/`), { status: `name: ${myStatus.username}, date: ${(new Date())}` })
-          fun();
-        } catch (error) {
-          console.log(error);
-        }
-      });
-  })
 }
 
 /* -------- Setup History --------- */
@@ -826,9 +861,12 @@ async function setupHistory() {
   const dt = `${dates.year}-${nmm}`;
   showMonth.innerText = dt;
   try {
-    const data = await get(ref(db, `datas/historyLogs`));
-    const logs = data.val()[dt];
-    logs.forEach(log => { hLog(log) });
+    const data = await get(ref(db, `datas/historyLogs/${dt}`));
+    if (data.exists()) {
+      const logs = data.val();
+      logs.reverse();
+      logs.forEach(log => { hLog(log) });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -837,8 +875,8 @@ async function setupHistory() {
 function hLog(l) {
   let unm = l.username === myStatus.username ? "you" : l.username;
   let mColor = unm === "you" ? "c-green" : "c-white";
-  let isDC = l.mod === "delete" ? "c-red" : "c-white";
-  let isx = l.type === "group" ? "c-cor1" : l.type === "item" ? "c-cor2" : mColor;
+  let isDC = l.mod === "delete" ? "c-red" : l.mod === "modify" ? "c-green" : "c-white";
+  let isx = l.type === "group" ? "c-cor1" : l.type === "item" ? "c-cor2" : "c-white";
   const hL = createEle("div", "h-log", showHistory);
   const spn = createEle("span", "h-span", hL);
   createEle("div", "c-white", spn, l.time);

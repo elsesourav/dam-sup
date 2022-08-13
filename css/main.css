@@ -1,6 +1,7 @@
 :root {
   --winWidth: 100vw;
   --winHeight: 100vh;
+  --list-len: 5;
 
   --header-h: 50px;
   --menu-list-h: 60px;

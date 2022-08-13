@@ -85,17 +85,21 @@ submitBtn[0].on(async () => {
 
   const useInpVal = userOrEmail.value;
   const pasInpVal = password.value;
-
-  const result = await get(ref(db, `members/${useInpVal}`));
-  if (result) {
-    const val = result.val();
-    const user = await signInWithEmailAndPassword(auth, val.email, pasInpVal);
-    const obj = {
-      username: val.username,
-      type: val.type
+  try {
+    const result = await get(ref(db, `members/${useInpVal}`));
+    if (result) {
+      const val = result.val();
+      const user = await signInWithEmailAndPassword(auth, val.email, pasInpVal);
+      const obj = {
+        username: val.username,
+        type: val.type
+      }
+      setCookie("DREAMOVA-SUPPLIERS-STORAGE", JSON.stringify(obj), 1000000);
+      location.replace("../index.html");
     }
-    setCookie("DREAMOVA-SUPPLIERS-STORAGE", JSON.stringify(obj), 1000000);
-    location.replace("../index.html");
+  } catch (error) {
+    alert("Your documents not correct! Please Try again.");
+    console.log(error);
   }
 });
 
@@ -160,6 +164,7 @@ submitBtn[1].on(async () => {
       document.body.classList.toggle("active", true);
     } catch (error) {
       console.log(error);
+      alert("Your documents not correct! Please Try again.");
     }
   }
 })

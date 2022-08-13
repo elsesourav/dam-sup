@@ -16,10 +16,13 @@ main #group-section .title-bar {
   width: 100%;
   height: var(--group-title-h);
   display: grid;
-  grid-template-columns: 30fr 5fr 5fr;
+  grid-template-columns: 1fr;
   align-items: center;
   justify-items: center;
   background: #335066;
+}
+main #group-section .title-bar.user {
+  grid-template-columns: 30fr 5fr 5fr;
 }
 
 main #group-section .title-bar .title {
@@ -39,6 +42,11 @@ main #group-section .title-bar .title i {
 .title-bar #add-new-group,
 .title-bar #edit-group {
   position: relative;
+  display: none;
+}
+.title-bar.user #add-new-group,
+.title-bar.user #edit-group {
+  display: block;
 }
 
 .title-bar #add-new-group i,
@@ -198,9 +206,12 @@ main #inside-group-window .title-bar {
   width: 100%;
   height: var(--group-title-h);
   display: grid;
-  grid-template-columns: 10fr 40fr 10fr 10fr;
+  grid-template-columns: 5fr 40fr;
   place-items: center;
   background: #335066;
+}
+main #inside-group-window .title-bar.user {
+  grid-template-columns: 10fr 40fr 10fr 10fr;
 }
 main #inside-group-window .title-bar .title {
   font-size: 1.4rem;
@@ -226,7 +237,7 @@ main #inside-group-window .title-bar #item-back-btn i {
   position: relative;
   width: calc(var(--group-title-h) / 1.6);
   height: calc(var(--group-title-h) / 1.6);
-  display: grid;
+  display: none;
   background: #00000066;
   border-radius: 6px;
   border-width: 2px;
@@ -235,6 +246,10 @@ main #inside-group-window .title-bar #item-back-btn i {
   border-color: #b36500 #ffa227 #ffa227 #b36500;
   box-shadow: 0 0 1px #000;
   place-items: center;
+}
+.title-bar.user #add-new-item,
+.title-bar.user #edit-item {
+  display: grid;
 }
 .title-bar #add-new-item i {
   font-size: 1.3rem;

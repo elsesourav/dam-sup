@@ -23,6 +23,9 @@
   grid-template-columns: 20fr 20fr;
   place-items: center;
 }
+.item.non-user .actiol-item {
+  grid-template-columns: 20fr 0;
+}
 .item .actiol-item .in-content {
   position: relative;
   width: 100%;
@@ -31,6 +34,11 @@
   align-items: center;
   padding-left: 15%;
   grid-template-rows: 20fr 15fr;
+}
+.item.non-user .actiol-item .in-content {
+  grid-template-columns: 3fr 1fr;
+  padding-left: 10%;
+  grid-template-rows: 1fr;
 }
 .item .actiol-item .item-name {
   font-size: 1rem;
@@ -67,6 +75,10 @@
   display: grid;
   grid-template-columns: 10fr 15fr 10fr;
   place-items: center;
+}
+.item .actiol-item span .quantity-input-fild.hide {
+  display: none; 
+
 }
 
 .item .actiol-item span .quantity-input-fild ._input_ {
