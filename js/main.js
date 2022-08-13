@@ -18,10 +18,10 @@ const db = getDatabase();
 const logoutWindow = I("logout-window");
 const loginBtn = I("login-btn");
 loginBtn.on(() => {
-  location.replace("../html/user.html")
+  location.replace("./html/user.html")
 });
 Q(".in-").on(() => {
-  location.replace("../html/user.html")
+  location.replace("./html/user.html")
 });
 
 //  resize windwo 
