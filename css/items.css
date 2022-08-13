@@ -171,31 +171,43 @@
   font-size: 1rem;
   caret-color: #000;
 }
+.editable-items .item-delete-btn {
+  box-shadow: inset 0 0 10px #f00, 0 0 3px #fff;
+}
+.editable-items .item-delete-btn,
+.editable-items .item-update {
+  color: #f00;
+  cursor: pointer;
+  border: solid 2px #ff000055;
+  padding: 5px 4px;
+  border-radius: 6px;
+}
 .editable-items .item-delete-btn i,
 .editable-items .item-update i {
   font-size: 1rem;
   color: #f00;
   text-shadow: 0 0 1px #000;
 }
-.editable-items .item-delete-btn,
-.editable-items .item-update {
-  color: #f00;
-  cursor: pointer;
-  border: solid 1px #ff000055;
-  padding: 5px 4px;
-  border-radius: 6px;
-}
 .editable-items .item-update i {
-  text-shadow: 0 0 1px #000;
-  color: #ff00ff88;
-}
-.editable-items .item-update {
-  color: #ff00ff88;
+  color: #50009288;
 }
 .editable-items .item-update.active i {
-  color: #f0f;
+  color: #500092;
   text-shadow: 0 0 1px #000;
 }
+
+.editable-items .item-update {
+  color: #50009288;
+  border-color: #50009288;
+  box-shadow:  0 0 3px #fff;
+}
+.editable-items .item-update.active {
+  color: #500092;
+  border-color: #500092;
+  box-shadow: inset 0 0 10px #500092, 0 0 3px #fff;
+}
+
+
 @media only screen and (min-width: 500px) {
   .item .actiol-item {
     grid-template-columns: 20fr 40fr;

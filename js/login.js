@@ -2,9 +2,10 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import {
   getAuth,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { equalTo, get, getDatabase, orderByChild, query, ref } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { equalTo, set, get, getDatabase, query, ref, update } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 
 
@@ -12,9 +13,10 @@ import { equalTo, get, getDatabase, orderByChild, query, ref } from "https://www
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth();
+const db = getDatabase();
 
 
-const submitBtn = Q(".submit_btn");
+const submitBtn = $(".submit_btn");
 const out = $(".out");
 const userOrEmail = I("user_or_email");
 const password = I("password");
@@ -28,7 +30,6 @@ const createOne = I("create-one");
 const goHome = I("go-home");
 const goLoginPag = I("go-login-pag");
 const loginWindowButton = I("login-window-button");
-const fullName = I("full_name");
 const username = I("username");
 const userCode = I("user-code");
 const emailIn = I("email");
@@ -46,7 +47,7 @@ goLoginPag.on(() => {
   document.body.classList.toggle("active", true);
 })
 goHome.on(() => {
-  location.replace("../index.html")
+  location.replace("../index.html");
 })
 
 
@@ -60,74 +61,105 @@ outInput.forEach((e, i) => {
   });
 });
 
-userOrEmail.on("input", checkCompliet);
-password.on("input", checkCompliet);
+let validLogin = false;
+userOrEmail.on("input", isLoginFildComplite);
+password.on("input", isLoginFildComplite);
+window.addEventListener("load", isLoginFildComplite);
 
-function checkCompliet() {
+function isLoginFildComplite() {
   const useInpVal = userOrEmail.value;
   const pasInpVal = password.value;
-  if (useInpVal.length > 2 && pasInpVal.length > 7) {
-    submitBtn.style.background = "#2819aa";
-  } else {
-    submitBtn.style.background = "#2819aa99";
-    return;
+  if (validUName(useInpVal) && validPass(pasInpVal)) {
+    validLogin = true;
+    submitBtn[0].style.background = "#2819aa";
+  }
+  else {
+    validLogin = false;
+    submitBtn[0].style.background = "#2819aa99";
   }
 }
 
 // submit button
-submitBtn.addEventListener("click", () => {
+submitBtn[0].on(async () => {
+  if (!validLogin) return;
+
   const useInpVal = userOrEmail.value;
   const pasInpVal = password.value;
-  if (useInpVal.length < 3 && pasInpVal.length < 8) return;
 
-  const db = getDatabase();
-
-  const que = query(
-    ref(db, "members"),
-    orderByChild("username"),
-    equalTo(useInpVal)
-  );
-  console.log(que);
-
-  get(que)
-    .then((snp) => {
-      let data = snp.val();
-      out.forEach(e => {
-        e.classList.toggle("u1", false);
-      })
-      if (data) {
-        for (const key in data) data = data[key];
-
-        if (data.username == useInpVal && data.password == pasInpVal) {
-          signInWithEmailAndPassword(auth, data.email, pasInpVal).then(() => {
-            const obj = {
-              uid: data.uid,
-              username: data.username,
-              userType: data.type
-            }
-            setCookie("DREAMOVA-SUPPLIERS-STORAGE", JSON.stringify(obj), 1000000);
-            loginWindow.classList.toggle("active", false);
-          })
-        } else {
-          out[1].classList.toggle("u1", true);
-        }
-      } else {
-        out.forEach(e => {
-          e.classList.toggle("u1", true);
-        })
-      }
-    })
+  const result = await get(ref(db, `members/${useInpVal}`));
+  if (result) {
+    const val = result.val();
+    const user = await signInWithEmailAndPassword(auth, val.email, pasInpVal);
+    const obj = {
+      username: val.username,
+      type: val.type
+    }
+    setCookie("DREAMOVA-SUPPLIERS-STORAGE", JSON.stringify(obj), 1000000);
+    location.replace("../index.html");
+  }
 });
 
-// const db = getDatabase();
-// // const id = b10t36(Date.now());
-// set(ref(db, `datas`), {
-//   historyLogs: historyLogs,
-//   groups: groups
-// })
-//   .then(() => {
-//     console.log("Successful");
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
+let validSignUp = false;
+username.on("input", isSignUpFildComplite);
+userCode.on("input", isSignUpFildComplite);
+emailIn.on("input", isSignUpFildComplite);
+passwordIn.on("input", isSignUpFildComplite);
+coPassword.on("input", isSignUpFildComplite);
+window.addEventListener("load", isSignUpFildComplite);
+
+function isSignUpFildComplite() {
+  const usernaemVal = username.value;
+  const userCodeVal = userCode.value;
+  const emailInVal = emailIn.value;
+  const passwordInVal = passwordIn.value;
+  const coPasswordVal = coPassword.value;
+
+  if (validUName(usernaemVal) && validText(userCodeVal) && validEmail(emailInVal) && validPass(passwordInVal) && validPass(coPasswordVal) && passwordInVal == coPasswordVal) {
+    console.log("run");
+    validSignUp = true;
+    submitBtn[1].style.background = "#2819aa";
+  } else {
+    validSignUp = false;
+    submitBtn[1].style.background = "#2819aa99";
+  }
+}
+
+submitBtn[1].on(async () => {
+  if (!validSignUp) return;
+  const usernaemVal = username.value;
+  const userCodeVal = userCode.value;
+  const emailInVal = emailIn.value;
+  const passwordInVal = passwordIn.value;
+
+  const data = (await get(ref(db, `members`))).val();
+  let userData = null;
+  for (const k in data) {
+    if (data[k].username == usernaemVal) {
+      userData = data[k];
+      break;
+    }
+  }
+
+  // when username or user key are same then create a new user
+  if (userData && userData.key == userCodeVal) {
+    try {
+      const createdUser = await createUserWithEmailAndPassword(auth, emailInVal, passwordInVal);
+  
+      const user = createdUser.user;
+      const date = new Date();
+  
+      await set(ref(db, `members/${usernaemVal}`), {
+        uid: user.uid,
+        email: emailInVal,
+        username: userData.username,
+        key: userData.key,
+        date: date,
+        type: 'member',
+        password: `%${b10t36(date)}${stringToB64(passwordInVal)}%${b10t36(date)}`
+      })
+      document.body.classList.toggle("active", true);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+})

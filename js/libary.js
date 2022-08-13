@@ -66,7 +66,11 @@ const createEle = (elementName, className = null, appendParentName = null, inrHt
   if (inrHtml) e.innerHTML = inrHtml;
   if (appendParentName) appendParentName.appendChild(e);
   e.on = (event, callBackFun) => {
-    e.addEventListener(event, callBackFun);
+    if (typeof event  != "string") {
+      e.addEventListener("click", event);
+    } else {
+      e.addEventListener(event, callBackFun);
+    }
   }
   return e;
 }
@@ -127,3 +131,28 @@ function getCookie(cname) {
   }
   return "";
 }
+
+
+const validEmail = exp => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(exp);
+const validName = exp => /^([a-zA-Zà-úÀ-Ú]{2,})+\s+([a-zA-Zà-úÀ-Ú\s]{2,})+$/.test(exp);
+const validUName = exp => /^[a-zA-Z0-9\_\-\@]{6,16}$/.test(exp);
+const validPass = exp => /^([A-Za-z0-9à-úÀ-Ú\@\_\.\-]{8,16})+$/.test(exp);
+const validText = exp => /^([A-Za-z0-9à-úÀ-Ú\.\-\,\_\|\?\:\*\&\%\#\!\+\~\₹\'\"\`\@\s]{2,})+$/.test(exp); 
+
+
+const b36to10 = b36 => parseInt(b36, 36);
+const b10to36 = b10 => b10.toString(36);
+const b64toString = b64 => btoa(b64);
+const stringToB64 = b64 => atob(b64);
+
+
+/* -------------------- formula ----------------------------------**
+** const date = new Date();                                       **
+** const pass = Sourav@121                                        **        
+** let x = `%${b10t36(date)}${stringToB64(pass)}%${b10t36(date)}` **  
+** console.log(x);                                                **  
+** x = x.split(`%${b10t36(date)}`).join("");                      **          
+** console.log(x);                                                **
+** let y = b64toString(x);                                        **  
+** console.log(y);                                                **      
+**----------------------------------------------------------------**/

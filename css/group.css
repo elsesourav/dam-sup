@@ -128,31 +128,40 @@ main #group-section #all-groups .group.active .editable-content {
   caret-color: #000;
   color: #000;
 }
+.group-delete-btn {
+  box-shadow: inset 0 0 10px #f00, 0 0 3px #fff;
+}
+.group-delete-btn,
+.group-update {
+  color: #f00;
+  cursor: pointer;
+  border: solid 2px #ff000055;
+  padding: 5px 4px;
+  border-radius: 6px;
+}
 .group-delete-btn i,
 .group-update i {
   font-size: 1rem;
   color: #f00;
   text-shadow: 0 0 1px #000;
 }
-.group-delete-btn,
-.group-update {
-  color: #f00;
-  cursor: pointer;
-  border: solid 1px #ff000055;
-  padding: 2px 4px;
-  border-radius: 6px;
-}
-.group-update {
-  border: solid 1px #ff00ff55;
+.group-update i {
+  color: #50009288;
 }
 .group-update.active i {
-  color: #f0f;
+  color: #500092;
   text-shadow: 0 0 1px #000;
 }
-.group-update,
-.group-update i {
-  color: #ff00ff55;
-  text-shadow: 0 0 1px #000;
+
+.group-update {
+  color: #50009288;
+  border-color: #50009288;
+  box-shadow: 0 0 3px #fff;
+}
+.group-update.active {
+  color: #500092;
+  border-color: #500092;
+  box-shadow: inset 0 0 10px #500092, 0 0 3px #fff;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -236,9 +245,9 @@ main #inside-group-window .title-bar #item-back-btn i {
 main #inside-group-window .scroll-box {
   height: calc(
     var(--winHeight) - var(--group-h) - var(--header-h) - var(--group-padding) *
-    2
-    );
-  }
+      2
+  );
+}
 
 @media only screen and (min-width: 1200px) {
   main #inside-group-window .title-bar {
@@ -246,7 +255,7 @@ main #inside-group-window .scroll-box {
   }
   main #inside-group-window .title-bar #item-back-btn i {
     font-size: 1.8rem;
-  } 
+  }
   .title-bar #add-new-item i {
     font-size: 1.5rem;
   }
@@ -255,8 +264,6 @@ main #inside-group-window .scroll-box {
   }
 }
 
-    
-  
 /* ------------- all item window ---------------- */
 #all-item-window {
   position: fixed;
