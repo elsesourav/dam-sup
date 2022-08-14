@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { equalTo, set, get, getDatabase, query, ref, update } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { set, get, getDatabase, query, ref, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 
 
@@ -90,11 +90,8 @@ submitBtn[0].on(async () => {
     if (result) {
       const val = result.val();
       await signInWithEmailAndPassword(auth, val.email, pasInpVal);
-      const obj = {
-        username: val.username,
-        type: val.type
-      }
-      setCookie("DREAMOVA-SUPPLIERS-STORAGE", JSON.stringify(obj), 1000000);
+
+      // setCookie("DREAMOVA-SUPPLIERS-STORAGE", JSON.stringify(obj), 1000000);
       location.replace("../index.html");
     }
   } catch (error) {
@@ -119,7 +116,6 @@ function isSignUpFildComplite() {
   const coPasswordVal = coPassword.value;
 
   if (validUName(usernaemVal) && validText(userCodeVal) && validEmail(emailInVal) && validPass(passwordInVal) && validPass(coPasswordVal) && passwordInVal == coPasswordVal) {
-    console.log("run");
     validSignUp = true;
     submitBtn[1].style.background = "#2819aa";
   } else {
@@ -135,28 +131,30 @@ submitBtn[1].on(async () => {
   const emailInVal = emailIn.value;
   const passwordInVal = passwordIn.value;
 
-  const data = (await get(ref(db, `members`))).val();
+
   let userData = null;
-  for (const k in data) {
-    if (data[k].username == usernaemVal) {
-      userData = data[k];
-      break;
-    }
+  const q = await query(ref(db, "members/"), orderByChild("username"), equalTo(usernaemVal));
+  let sp = await get(q);
+
+  if (sp.exists()) {
+    userData = sp.val();
+    let key = Object.keys(userData)[0]; // get user object key
+    userData = userData[key];
   }
 
   // when username or user key are same then create a new user
   if (userData && userData.key == userCodeVal) {
     try {
       const createdUser = await createUserWithEmailAndPassword(auth, emailInVal, passwordInVal);
-  
+
       const user = createdUser.user;
-      const date = new Date();
-      
+      const date = Date.now();
+
       await set(ref(db, `members/${usernaemVal}`), {
         uid: user.uid,
         email: emailInVal,
         username: userData.username,
-        date: date,
+        date_: `${date}`,
         key: userData.key,
         type: userData.type,
         password: `%${b10t36(date)}${stringToB64(passwordInVal)}%${b10t36(date)}`
@@ -166,5 +164,7 @@ submitBtn[1].on(async () => {
       console.log(error);
       alert("Your documents not correct! Please Try again.");
     }
+  } else {
+    alert("Username or Code not match! Please Try again.");
   }
 })

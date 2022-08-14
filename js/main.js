@@ -39,20 +39,30 @@ window.addEventListener("resize", (e) => {
 });
 
 try {
-  onAuthStateChanged(auth, (usr) => {
+  onAuthStateChanged(auth, async (usr) => {
     if (usr) {
-      const dtls = JSON.parse(getCookie("DREAMOVA-SUPPLIERS-STORAGE"));
-      myStatus = dtls;
+      const q = query(ref(db, "members/"), orderByChild("uid"), equalTo(usr.uid));
+      let sp = (await get(q)).val();
+      let key = Object.keys(sp)[0];
+      sp = sp[key];
+      myStatus = {
+        username: sp.username,
+        type: sp.type,
+      }
+      I("loading-window").classList.remove("active");
+      // const dtls = JSON.parse(getCookie("DREAMOVA-SUPPLIERS-STORAGE"));
       I("welcome-title").innerText = `Welcome ${myStatus.username}`;
+
       loginBtn.classList.toggle("active", false);
       logoutWindow.classList.toggle("active", false);
+
       I("group-title").classList.add("user");
       I("item-title").classList.add("user");
+
       if (myStatus.type == "admin") I("open-members").classList.add("show");
       root.style.setProperty("--list-len", `6`);
+
     } else {
-      loginBtn.classList.toggle("active", true);
-      logoutWindow.classList.toggle("active", true);
       console.log("no user");
     }
   });
@@ -841,7 +851,7 @@ function setMember(mem) {
                 email: s.email || null,
                 username: val,
                 key: s.key,
-                date: s.date || null,
+                date_: s.date_ || null,
                 type: s.type || null,
                 password: s.password || null
               }
