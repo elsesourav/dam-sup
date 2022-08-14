@@ -126,8 +126,8 @@
 #loading-window {
   position: fixed;
   inset: 0;
-  width: var(--winWidth);
-  height: var(--winHeight);
+  width: 100vw;
+  height: 100vh;
   background: #282a38;
   opacity: 0;
   z-index: -100;
