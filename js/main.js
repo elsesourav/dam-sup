@@ -49,7 +49,7 @@ try {
         username: sp.username,
         type: sp.type,
       }
-      I("loading-window").classList.remove("active");
+
       // const dtls = JSON.parse(getCookie("DREAMOVA-SUPPLIERS-STORAGE"));
       I("welcome-title").innerText = `Welcome ${myStatus.username}`;
 
@@ -65,6 +65,7 @@ try {
     } else {
       console.log("no user");
     }
+    I("loading-window").classList.remove("active");
   });
 
   onValue(ref(db, "datas"), (snapshot) => {
