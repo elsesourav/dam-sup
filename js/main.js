@@ -24,7 +24,7 @@ Q(".in-").on(() => {
   location.replace("./html/user.html")
 });
 
-//  resize windwo 
+//  resize window 
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
 const root = document.querySelector(":root");
@@ -81,10 +81,11 @@ try {
     }
   })
 
-  onValue(ref(db, "members"), (snps) => {
-    memberSetup();
+  // onValue(ref(db, "members"), (snps) => {
+  //   // memberSetup();
+  //   console.log(1);
 
-  })
+  // })
 
   onValue(ref(db, `laseUpdate`), async () => {
     const sp = await get(ref(db, `datas/groups/${currentGroup}/items`))
@@ -339,7 +340,7 @@ openMembers.on(() => {
 
 async function memberSetup() {
   if (myStatus.type != "admin") return;
-  const members = (await get(ref(db, `members`))).val();
+  const members = (await get(ref(db, "members"))).val();
   allMembers.innerHTML = "";
   for (const key in members) {
     setMember(members[key]);
